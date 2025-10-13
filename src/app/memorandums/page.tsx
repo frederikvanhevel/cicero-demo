@@ -148,7 +148,11 @@ export default function MemorandumsPage() {
                 </TableHeader>
                 <TableBody>
                   {memorandums.map((memo) => (
-                    <TableRow key={memo.id} className="cursor-pointer">
+                    <TableRow
+                      key={memo.id}
+                      className="cursor-pointer"
+                      onClick={() => router.push(`/memorandums/${memo.id}`)}
+                    >
                       <TableCell className="py-3">
                         <div className="flex items-center gap-2.5">
                           <div className="w-6 h-6 rounded bg-muted flex items-center justify-center flex-shrink-0">

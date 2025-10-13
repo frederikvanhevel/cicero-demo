@@ -5,21 +5,41 @@ import { useRouter } from "next/navigation"
 import { useState } from "react"
 import Sidebar from "@/components/Sidebar"
 import { Button } from "@/components/ui/button"
+import { GenerationModal } from "@/components/GenerationModal"
 import { SinglePageForm } from "./components/SinglePageForm"
 import { questions } from "./data/questions"
 
 export default function NewMemorandumPage() {
   const router = useRouter()
   const [progress, setProgress] = useState({ answered: 0, total: questions.length, percentage: 0 })
+  const [showGenerationModal, setShowGenerationModal] = useState(false)
 
   const handleSubmit = async (data: any) => {
     console.log("Form submitted:", data)
-    // Handle form submission here
+
+    // Show the generation modal
+    setShowGenerationModal(true)
+
+    // In production, this would call your API to start generation
+    // For demo, the modal handles the visual progression
+  }
+
+  const handleMinimize = () => {
+    // Redirect to overview page
+    router.push('/memorandums')
   }
 
   return (
     <div className="min-h-screen bg-background">
       <Sidebar />
+
+      {/* Generation Modal */}
+      <GenerationModal
+        open={showGenerationModal}
+        onOpenChange={setShowGenerationModal}
+        onMinimize={handleMinimize}
+        documentTitle="ABS Compliance Memorandum"
+      />
 
       <main className="min-h-screen">
         {/* Header */}
