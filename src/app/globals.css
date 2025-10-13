@@ -14,7 +14,8 @@ All colors MUST be HSL.
   --popover: 0 0% 100%;
   --popover-foreground: 0 0% 15%;
 
-  --primary: 220 13% 28%;
+  /* Professional blue-slate for primary actions */
+  --primary: 215 25% 27%;
   --primary-foreground: 0 0% 98%;
 
   --secondary: 220 13% 95%;
@@ -23,15 +24,28 @@ All colors MUST be HSL.
   --muted: 220 13% 95%;
   --muted-foreground: 220 9% 46%;
 
-  --accent: 221 83% 53%;
+  /* Vibrant blue for interactive elements and progress */
+  --accent: 217 91% 60%;
   --accent-foreground: 0 0% 100%;
+
+  /* Success green for completed states */
+  --success: 142 71% 45%;
+  --success-foreground: 0 0% 100%;
+
+  /* Info blue for informational elements */
+  --info: 199 89% 48%;
+  --info-foreground: 0 0% 100%;
+
+  /* Warning amber for attention items */
+  --warning: 38 92% 50%;
+  --warning-foreground: 0 0% 100%;
 
   --destructive: 0 84% 60%;
   --destructive-foreground: 0 0% 98%;
 
   --border: 220 13% 91%;
   --input: 220 13% 91%;
-  --ring: 221 83% 53%;
+  --ring: 217 91% 60%;
 
   --radius: 0.75rem;
 
@@ -42,7 +56,7 @@ All colors MUST be HSL.
   --sidebar-accent: 240 4.8% 95.9%;
   --sidebar-accent-foreground: 240 5.9% 10%;
   --sidebar-border: 220 13% 91%;
-  --sidebar-ring: 217.2 91.2% 59.8%;
+  --sidebar-ring: 217 91% 60%;
 }
 
 @theme inline {
@@ -60,6 +74,12 @@ All colors MUST be HSL.
   --color-muted-foreground: hsl(var(--muted-foreground));
   --color-accent: hsl(var(--accent));
   --color-accent-foreground: hsl(var(--accent-foreground));
+  --color-success: hsl(var(--success));
+  --color-success-foreground: hsl(var(--success-foreground));
+  --color-info: hsl(var(--info));
+  --color-info-foreground: hsl(var(--info-foreground));
+  --color-warning: hsl(var(--warning));
+  --color-warning-foreground: hsl(var(--warning-foreground));
   --color-destructive: hsl(var(--destructive));
   --color-destructive-foreground: hsl(var(--destructive-foreground));
   --color-border: hsl(var(--border));
@@ -77,6 +97,21 @@ body {
   background: hsl(var(--background));
   color: hsl(var(--foreground));
   font-family: Arial, Helvetica, sans-serif;
+}
+
+/* Gradient utilities */
+@layer utilities {
+  /* Primary gradient for branding */
+  .bg-gradient-brand {
+    background: linear-gradient(to bottom right, hsl(var(--accent)), hsl(var(--info)));
+  }
+
+  .text-gradient-brand {
+    background: linear-gradient(to bottom right, hsl(var(--accent)), hsl(var(--info)));
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+  }
 }
 
 /* Markdown content styling */

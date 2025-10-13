@@ -4,6 +4,7 @@ import { ArrowLeft } from "lucide-react"
 import { useRouter } from "next/navigation"
 import { useState } from "react"
 import Sidebar from "@/components/Sidebar"
+import { Header } from "@/components/Header"
 import { Button } from "@/components/ui/button"
 import { GenerationModal } from "@/components/GenerationModal"
 import { SinglePageForm } from "./components/SinglePageForm"
@@ -43,25 +44,10 @@ export default function NewMemorandumPage() {
 
       <main className="min-h-screen">
         {/* Header */}
-        <header className="border-b border-border bg-card/50 backdrop-blur-sm sticky top-0 z-20">
-          <div className="px-6 py-3 flex items-center justify-between">
-            <div className="flex items-center gap-3">
-              <div className="w-8 h-8 rounded-lg bg-primary flex items-center justify-center">
-                <span className="text-primary-foreground font-bold text-sm">C</span>
-              </div>
-              <span className="text-sm font-semibold text-foreground">Cicero</span>
-            </div>
-
-            <div className="flex items-center gap-2">
-              <div className="w-8 h-8 rounded-full bg-primary/10 flex items-center justify-center cursor-pointer hover:bg-primary/20 transition-all duration-100">
-                <span className="text-xs font-medium text-primary">JD</span>
-              </div>
-            </div>
-          </div>
-        </header>
+        <Header logoType="image" />
 
         {/* Toolbar - Sticky with Progress */}
-        <div className="border-b border-border bg-background/95 backdrop-blur-sm ml-16 sticky top-[57px] z-10">
+        <div className="border-b border-border bg-background ml-16 sticky top-[57px] z-10">
           <div className="px-6 h-12 flex items-center justify-between gap-4">
             <div className="flex items-center gap-3">
               <Button
@@ -89,7 +75,7 @@ export default function NewMemorandumPage() {
           {/* Minimal Progress Bar */}
           <div className="h-0.5 bg-muted">
             <div
-              className="h-full bg-primary transition-all duration-500 ease-out"
+              className="h-full bg-gradient-brand transition-all duration-500 ease-out shadow-sm"
               style={{ width: `${progress.percentage}%` }}
             />
           </div>

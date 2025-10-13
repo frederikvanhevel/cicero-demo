@@ -90,17 +90,17 @@ export function GenerationModal({
                                 key={stage.id}
                                 className={cn(
                                     'flex items-center gap-3 p-4 rounded-lg border transition-all duration-300',
-                                    stage.status === 'active' && 'border-primary/50 bg-primary/5',
-                                    stage.status === 'complete' && 'border-border bg-muted/30',
+                                    stage.status === 'active' && 'border-blue-200 bg-blue-50',
+                                    stage.status === 'complete' && 'border-green-200 bg-green-50',
                                     stage.status === 'pending' && 'border-border bg-background'
                                 )}
                             >
                                 <div className="flex-shrink-0">
                                     {stage.status === 'complete' && (
-                                        <CheckCircle2 className="h-5 w-5 text-primary" />
+                                        <CheckCircle2 className="h-5 w-5 text-green-600" />
                                     )}
                                     {stage.status === 'active' && (
-                                        <Loader2 className="h-5 w-5 animate-spin text-primary" />
+                                        <Loader2 className="h-5 w-5 animate-spin text-blue-600" />
                                     )}
                                     {stage.status === 'pending' && (
                                         <Circle className="h-5 w-5 text-muted-foreground" />
@@ -124,12 +124,12 @@ export function GenerationModal({
                     <div className="space-y-2">
                         <div className="h-1.5 bg-muted rounded-full overflow-hidden">
                             <div
-                                className="h-full bg-primary transition-all duration-700 ease-out"
+                                className="h-full bg-gradient-brand transition-all duration-700 ease-out shadow-sm"
                                 style={{ width: `${progress}%` }}
                             />
                         </div>
                         <div className="flex justify-between text-xs text-muted-foreground">
-                            <span>{progress}% complete</span>
+                            <span className="text-blue-600 font-medium">{progress}% complete</span>
                             <span>~{timeRemaining} min remaining</span>
                         </div>
                     </div>

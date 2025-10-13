@@ -202,7 +202,7 @@ export function SinglePageForm({ questions, onSubmit, onProgressChange }: Single
                                                 disabled={
                                                     formState.isSubmitting
                                                 }
-                                                className='h-9 px-4 cursor-pointer'
+                                                className='h-9 px-4 cursor-pointer bg-accent text-white hover:bg-accent/90'
                                             >
                                                 {formState.isSubmitting
                                                     ? 'Generating...'

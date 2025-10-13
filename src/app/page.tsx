@@ -1,10 +1,15 @@
+"use client"
+
 import { Search, ArrowUpDown } from "lucide-react"
+import { useRouter } from "next/navigation"
 import Sidebar from "@/components/Sidebar"
 import SearchBar from "@/components/SearchBar"
 import PromptCard from "@/components/PromptCard"
+import { Header } from "@/components/Header"
 import { Button } from "@/components/ui/button"
 
 export default function Home() {
+  const router = useRouter()
   const prompts = [
     {
       title: "Access & Benefit Sharing Memorandum",
@@ -37,22 +42,7 @@ export default function Home() {
       <Sidebar />
 
       <main className="min-h-screen">
-        <header className="border-b border-border bg-card/50 backdrop-blur-sm sticky top-0 z-10">
-          <div className="px-6 py-3 flex items-center justify-between">
-            <div className="flex items-center gap-3">
-              <div className="w-8 h-8 rounded-lg bg-primary flex items-center justify-center">
-                <span className="text-primary-foreground font-bold text-sm">C</span>
-              </div>
-              <span className="text-sm font-semibold text-foreground">Cicero</span>
-            </div>
-
-            <div className="flex items-center gap-2">
-              <div className="w-8 h-8 rounded-full bg-primary/10 flex items-center justify-center cursor-pointer hover:bg-primary/20 transition-all duration-100">
-                <span className="text-xs font-medium text-primary">JD</span>
-              </div>
-            </div>
-          </div>
-        </header>
+        <Header logoType="image" />
 
         <div className="max-w-7xl mx-auto px-8 py-12">
           <div className="text-center mb-12">
@@ -70,7 +60,7 @@ export default function Home() {
             <div className="flex items-center justify-between">
               <div className="flex items-center gap-3">
                 <h3 className="text-sm font-medium text-foreground">Memorandum Templates</h3>
-                <span className="text-xs text-muted-foreground bg-muted px-2 py-1 rounded">
+                <span className="text-xs text-white bg-accent px-2 py-1 rounded font-medium">
                   Popular
                 </span>
               </div>
@@ -85,7 +75,7 @@ export default function Home() {
                 <Button variant="outline" size="sm" className="text-xs">
                   Create custom
                 </Button>
-                <Button variant="default" size="sm" className="text-xs bg-foreground text-background hover:bg-foreground/90">
+                <Button variant="default" size="sm" className="text-xs bg-accent text-white hover:bg-accent/90">
                   View all templates
                 </Button>
               </div>
@@ -97,6 +87,7 @@ export default function Home() {
                   key={index}
                   title={prompt.title}
                   description={prompt.description}
+                  onClick={() => router.push('/memorandums/new')}
                 />
               ))}
             </div>

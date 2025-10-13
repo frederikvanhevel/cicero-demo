@@ -57,7 +57,7 @@ const SearchBar = () => {
             className="text-xs text-muted-foreground hover:text-foreground"
           >
             <Paperclip className="w-4 h-4 mr-1.5" />
-            Prompt library
+            Template library
           </Button>
         </div>
       </div>
