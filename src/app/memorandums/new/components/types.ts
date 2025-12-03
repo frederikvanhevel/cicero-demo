@@ -12,7 +12,7 @@ export enum QuestionType {
 }
 
 export interface CaseFormData {
-    [key: string]: any
+    [key: string]: unknown
 }
 
 export interface QuestionOption {
@@ -54,6 +54,6 @@ export interface Question {
     validation?: {
         minLength?: number
         maxLength?: number
-        custom?: (value: any) => string | true
+        custom?: (value: unknown) => string | true
     }
 }

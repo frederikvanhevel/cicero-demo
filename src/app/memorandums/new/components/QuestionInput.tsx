@@ -30,8 +30,8 @@ import { CountryDatePair, Question, QuestionType } from './types'
 
 interface QuestionInputProps {
     question: Question
-    value: any
-    onChange: (value: any) => void
+    value: unknown
+    onChange: (value: unknown) => void
     showValidation?: boolean
 }
 
@@ -45,7 +45,7 @@ const getCountryCodeFromName = (countryName: string): string => {
 
     // Find country code by matching name
     const countryEntry = Object.entries(countries).find(
-        ([_, country]) => country.name === normalizedName
+        ([_code, country]) => country.name === normalizedName
     )
 
     return countryEntry ? countryEntry[0] : 'UN' // Return UN as fallback
@@ -75,14 +75,14 @@ export function QuestionInput({
     onChange,
     showValidation
 }: QuestionInputProps) {
-    const textareaRef = useAutoGrow(value || '')
+    const textareaRef = useAutoGrow((value as string) || '')
 
     switch (question.type) {
         case QuestionType.TEXT:
             return (
                 <Input
                     placeholder={question.options?.placeholder}
-                    value={value || ''}
+                    value={(value as string) || ''}
                     onChange={(e) => onChange(e.target.value)}
                     className={showValidation ? 'border-red-500' : ''}
                 />
@@ -93,7 +93,7 @@ export function QuestionInput({
                 <Textarea
                     ref={textareaRef}
                     placeholder={question.options?.placeholder}
-                    value={value || ''}
+                    value={(value as string) || ''}
                     onChange={(e) => onChange(e.target.value)}
                     className={`min-h-[60px] ${showValidation ? 'border-red-500' : ''}`}
                 />
@@ -183,7 +183,7 @@ export function QuestionInput({
         case QuestionType.RADIO:
             return (
                 <RadioGroup
-                    value={value}
+                    value={value as string}
                     onValueChange={onChange}
                     required={question.required}
                     className={`space-y-2 ${showValidation ? 'border-red-500' : ''}`}
@@ -207,7 +207,7 @@ export function QuestionInput({
 
         case QuestionType.SELECT:
             return (
-                <Select value={value || ''} onValueChange={onChange}>
+                <Select value={(value as string) || ''} onValueChange={onChange}>
                     <SelectTrigger
                         className={showValidation ? 'border-red-500' : ''}
                     >
@@ -232,7 +232,7 @@ export function QuestionInput({
             return (
                 <MultiSelectQuestion
                     question={question}
-                    value={value || []}
+                    value={(value as string[]) || []}
                     onChange={onChange}
                     error={
                         showValidation ? 'This field is required' : undefined
@@ -250,7 +250,7 @@ export function QuestionInput({
                         >
                             <CalendarIcon className='mr-2 h-4 w-4 text-muted-foreground' />
                             {value ? (
-                                <span className='text-foreground'>{format(value, 'PPP')}</span>
+                                <span className='text-foreground'>{format(value as Date, 'PPP')}</span>
                             ) : (
                                 <span className='text-muted-foreground'>
                                     {question.options?.placeholder ||
@@ -262,7 +262,7 @@ export function QuestionInput({
                     <PopoverContent className='w-auto p-0' align='start'>
                         <Calendar
                             mode='single'
-                            selected={value}
+                            selected={value as Date}
                             onSelect={onChange}
                             initialFocus
                         />
@@ -274,9 +274,9 @@ export function QuestionInput({
             return (
                 <div className='space-y-4'>
                     <RadioGroup
-                        value={value?.type || ''}
+                        value={(value as { type?: string; date?: Date })?.type || ''}
                         onValueChange={(type) => {
-                            onChange({ ...value, type })
+                            onChange({ ...(value as { type?: string; date?: Date }), type })
                         }}
                         required={question.required}
                         className={showValidation ? 'border-red-500' : ''}
@@ -296,7 +296,7 @@ export function QuestionInput({
                                     </Label>
                                 </div>
                                 {option.showDatePicker &&
-                                    value?.type === option.value && (
+                                    (value as { type?: string; date?: Date })?.type === option.value && (
                                         <div className='pl-6'>
                                             <Popover>
                                                 <PopoverTrigger asChild>
@@ -305,9 +305,9 @@ export function QuestionInput({
                                                         className={`w-[240px] justify-start text-left font-normal ${showValidation ? 'border-red-500' : ''}`}
                                                     >
                                                         <CalendarIcon className='mr-2 h-4 w-4' />
-                                                        {value?.date ? (
+                                                        {(value as { type?: string; date?: Date })?.date ? (
                                                             format(
-                                                                value.date,
+                                                                (value as { type?: string; date?: Date }).date!,
                                                                 'PPP'
                                                             )
                                                         ) : (
@@ -323,10 +323,10 @@ export function QuestionInput({
                                                 >
                                                     <Calendar
                                                         mode='single'
-                                                        selected={value?.date}
+                                                        selected={(value as { type?: string; date?: Date })?.date}
                                                         onSelect={(date) =>
                                                             onChange({
-                                                                ...value,
+                                                                ...(value as { type?: string; date?: Date }),
                                                                 date
                                                             })
                                                         }
@@ -343,7 +343,7 @@ export function QuestionInput({
             )
 
         case QuestionType.COUNTRY_DATE_PAIRS:
-            const pairs = value || []
+            const pairs = (value as CountryDatePair[]) || []
             return (
                 <div className='space-y-4'>
                     {pairs.map((pair: CountryDatePair, index: number) => (

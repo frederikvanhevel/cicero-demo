@@ -224,7 +224,7 @@ const evaluationData = {
   ]
 }
 
-export default function MemorandumDetailPage({ params }: { params: { id: string } }) {
+export default function MemorandumDetailPage() {
   const router = useRouter()
   const [memoContent, setMemoContent] = useState<string>("")
   const [isLoading, setIsLoading] = useState(true)

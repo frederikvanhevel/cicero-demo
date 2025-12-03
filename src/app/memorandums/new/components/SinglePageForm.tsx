@@ -14,14 +14,14 @@ interface SinglePageFormProps {
 }
 
 type FormState = {
-    values: Record<string, any>
+    values: Record<string, unknown>
     isSubmitting: boolean
     showValidation: boolean
     validationErrors: string[]
 }
 
 type FormAction =
-    | { type: 'UPDATE_FIELD'; field: string; value: any }
+    | { type: 'UPDATE_FIELD'; field: string; value: unknown }
     | { type: 'SET_SUBMITTING'; value: boolean }
     | { type: 'SET_VALIDATION'; show: boolean; errors?: string[] }
 
@@ -62,8 +62,10 @@ export function SinglePageForm({ questions, onSubmit, onProgressChange }: Single
     // Calculate progress based on required questions only
     const requiredQuestions = questions.filter((q) => q.required)
     const answeredRequiredQuestions = requiredQuestions.filter(
-        (q) => formState.values[q.code] !== undefined && formState.values[q.code] !== '' &&
-        (Array.isArray(formState.values[q.code]) ? formState.values[q.code].length > 0 : true)
+        (q) => {
+            const val = formState.values[q.code]
+            return val !== undefined && val !== '' && (Array.isArray(val) ? val.length > 0 : true)
+        }
     ).length
     const progress = requiredQuestions.length > 0
         ? Math.round((answeredRequiredQuestions / requiredQuestions.length) * 100)
@@ -109,7 +111,7 @@ export function SinglePageForm({ questions, onSubmit, onProgressChange }: Single
         }
     }
 
-    const updateFieldValue = useCallback((fieldCode: string, value: any) => {
+    const updateFieldValue = useCallback((fieldCode: string, value: unknown) => {
         dispatch({ type: 'UPDATE_FIELD', field: fieldCode, value })
     }, [])
 

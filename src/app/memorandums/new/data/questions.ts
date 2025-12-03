@@ -180,21 +180,22 @@ export const questions: Question[] = [
             'Understanding the nature of your material is crucial for ABS compliance. The following questions help us determine the appropriate protocols and requirements.',
         help: 'Add each country where the material was acquired and specify the acquisition date for each country.',
         validation: {
-            custom: (value: CountryDatePair[] | undefined) => {
-                if (!value || value.length === 0) {
+            custom: (value: unknown) => {
+                const pairs = value as CountryDatePair[] | undefined
+                if (!pairs || pairs.length === 0) {
                     return 'Please add at least one country'
                 }
-                if (value.some((pair) => !pair.country)) {
+                if (pairs.some((pair) => !pair.country)) {
                     return 'Please select a country for each entry'
                 }
-                if (value.some((pair) => !pair.date)) {
+                if (pairs.some((pair) => !pair.date)) {
                     return 'Please specify an acquisition date for each country'
                 }
                 return true
             }
         },
         options: {
-            countries: Object.entries(countries).map(([code, country]) => ({
+            countries: Object.entries(countries).map(([_code, country]) => ({
                 value: country.name.toLowerCase().replace(/\s+/g, '-'),
                 label: country.name
             })),

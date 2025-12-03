@@ -57,7 +57,7 @@ export function CountrySelect({
     }
 
     const customStyles = {
-        option: (provided: any, state: any) => ({
+        option: (provided: Record<string, unknown>) => ({
             ...provided,
             display: 'flex',
             alignItems: 'center',

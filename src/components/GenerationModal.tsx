@@ -151,7 +151,7 @@ export function DraftingModal({
 
                     {/* Small disclaimer */}
                     <p className="text-xs text-muted-foreground text-center">
-                        You can close this window and we'll notify you when complete
+                        You can close this window and we&apos;ll notify you when complete
                     </p>
                 </div>
             </DialogContent>

@@ -11,8 +11,8 @@ export interface QuestionCardProps {
     stepDescription: string
     index: number
     isFirstQuestionOfStep: boolean
-    value: any
-    onChange: (value: any) => void
+    value: unknown
+    onChange: (value: unknown) => void
     showValidation?: boolean
 }
 
