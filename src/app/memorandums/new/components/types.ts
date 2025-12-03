@@ -20,6 +20,7 @@ export interface QuestionOption {
     label: string
     description?: string
     showDatePicker?: boolean
+    allowCustomInput?: boolean
 }
 
 export interface CountryDatePair {

@@ -94,9 +94,26 @@ All colors MUST be HSL.
 }
 
 body {
-  background: hsl(var(--background));
+  background: linear-gradient(135deg, #0e2a47 0%, #00459e 100%);
   color: hsl(var(--foreground));
   font-family: Arial, Helvetica, sans-serif;
+  position: relative;
+}
+
+body::before {
+  content: '';
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: 
+    linear-gradient(135deg, rgba(255, 255, 255, 0.1) 0%, transparent 50%),
+    linear-gradient(45deg, transparent 30%, rgba(255, 255, 255, 0.075) 50%, transparent 70%),
+    linear-gradient(225deg, rgba(0, 0, 0, 0.1) 0%, transparent 50%),
+    linear-gradient(315deg, transparent 30%, rgba(0, 0, 0, 0.075) 50%, transparent 70%);
+  pointer-events: none;
+  z-index: -1;
 }
 
 /* Gradient utilities */
@@ -112,6 +129,60 @@ body {
     background-clip: text;
     -webkit-text-fill-color: transparent;
   }
+
+  /* Content background for readability */
+  .bg-content {
+    background: hsl(var(--background));
+    backdrop-filter: blur(10px);
+  }
+}
+
+/* Shimmer animation for progress bars */
+@keyframes shimmer {
+  0% {
+    transform: translateX(-100%);
+  }
+  100% {
+    transform: translateX(100%);
+  }
+}
+
+@keyframes shimmer-delayed {
+  0% {
+    transform: translateX(-100%);
+  }
+  100% {
+    transform: translateX(100%);
+  }
+}
+
+.animate-shimmer {
+  animation: shimmer 1.5s ease-in-out infinite;
+}
+
+.animate-shimmer-delayed {
+  animation: shimmer-delayed 2s ease-in-out infinite;
+  animation-delay: 0.3s;
+}
+
+/* Custom scrollbar styling */
+.scrollbar-thin::-webkit-scrollbar {
+  width: 6px;
+}
+
+.scrollbar-thin::-webkit-scrollbar-track {
+  background: transparent;
+  border-radius: 3px;
+}
+
+.scrollbar-thin::-webkit-scrollbar-thumb {
+  background: hsl(var(--muted-foreground) / 0.2);
+  border-radius: 3px;
+  transition: background 0.2s;
+}
+
+.scrollbar-thin::-webkit-scrollbar-thumb:hover {
+  background: hsl(var(--muted-foreground) / 0.3);
 }
 
 /* Markdown content styling */
@@ -240,4 +311,68 @@ body {
   border-top: 1px solid hsl(var(--border));
   margin-top: 2rem;
   margin-bottom: 2rem;
+}
+
+/* AI Evaluation Markers */
+.ai-evaluation-marker {
+  background: linear-gradient(135deg,
+    hsl(var(--accent) / 0.15) 0%,
+    hsl(var(--info) / 0.12) 100%);
+  border-bottom: 2px solid hsl(var(--accent) / 0.4);
+  padding: 0.125rem 0.25rem;
+  border-radius: 0.25rem;
+  cursor: help;
+  position: relative;
+  transition: all 0.2s ease;
+  display: inline;
+}
+
+.ai-evaluation-marker:hover {
+  background: linear-gradient(135deg,
+    hsl(var(--accent) / 0.25) 0%,
+    hsl(var(--info) / 0.22) 100%);
+  border-bottom-color: hsl(var(--accent) / 0.6);
+}
+
+/* Marker severity variants */
+.ai-evaluation-marker[data-severity="high"] {
+  background: linear-gradient(135deg,
+    hsl(var(--warning) / 0.15) 0%,
+    hsl(var(--destructive) / 0.12) 100%);
+  border-bottom-color: hsl(var(--warning) / 0.5);
+}
+
+.ai-evaluation-marker[data-severity="high"]:hover {
+  background: linear-gradient(135deg,
+    hsl(var(--warning) / 0.25) 0%,
+    hsl(var(--destructive) / 0.22) 100%);
+  border-bottom-color: hsl(var(--warning) / 0.7);
+}
+
+.ai-evaluation-marker[data-severity="medium"] {
+  background: linear-gradient(135deg,
+    hsl(var(--info) / 0.15) 0%,
+    hsl(var(--accent) / 0.12) 100%);
+  border-bottom-color: hsl(var(--info) / 0.4);
+}
+
+.ai-evaluation-marker[data-severity="medium"]:hover {
+  background: linear-gradient(135deg,
+    hsl(var(--info) / 0.25) 0%,
+    hsl(var(--accent) / 0.22) 100%);
+  border-bottom-color: hsl(var(--info) / 0.6);
+}
+
+.ai-evaluation-marker[data-severity="low"] {
+  background: linear-gradient(135deg,
+    hsl(var(--success) / 0.15) 0%,
+    hsl(142 71% 55% / 0.12) 100%);
+  border-bottom-color: hsl(var(--success) / 0.4);
+}
+
+.ai-evaluation-marker[data-severity="low"]:hover {
+  background: linear-gradient(135deg,
+    hsl(var(--success) / 0.25) 0%,
+    hsl(142 71% 55% / 0.22) 100%);
+  border-bottom-color: hsl(var(--success) / 0.6);
 }

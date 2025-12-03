@@ -6,22 +6,22 @@ import { useState } from "react"
 import Sidebar from "@/components/Sidebar"
 import { Header } from "@/components/Header"
 import { Button } from "@/components/ui/button"
-import { GenerationModal } from "@/components/GenerationModal"
+import { DraftingModal } from "@/components/DraftingModal"
 import { SinglePageForm } from "./components/SinglePageForm"
 import { questions } from "./data/questions"
 
 export default function NewMemorandumPage() {
   const router = useRouter()
   const [progress, setProgress] = useState({ answered: 0, total: questions.length, percentage: 0 })
-  const [showGenerationModal, setShowGenerationModal] = useState(false)
+  const [showDraftingModal, setShowDraftingModal] = useState(false)
 
-  const handleSubmit = async (data: any) => {
+  const handleSubmit = async (data: Record<string, unknown>) => {
     console.log("Form submitted:", data)
 
-    // Show the generation modal
-    setShowGenerationModal(true)
+    // Show the drafting modal
+    setShowDraftingModal(true)
 
-    // In production, this would call your API to start generation
+    // In production, this would call your API to start drafting
     // For demo, the modal handles the visual progression
   }
 
@@ -34,10 +34,10 @@ export default function NewMemorandumPage() {
     <div className="min-h-screen bg-background">
       <Sidebar />
 
-      {/* Generation Modal */}
-      <GenerationModal
-        open={showGenerationModal}
-        onOpenChange={setShowGenerationModal}
+      {/* Drafting Modal */}
+      <DraftingModal
+        open={showDraftingModal}
+        onOpenChange={setShowDraftingModal}
         onMinimize={handleMinimize}
         documentTitle="ABS Compliance Memorandum"
       />
@@ -59,7 +59,7 @@ export default function NewMemorandumPage() {
                 <ArrowLeft className="w-4 h-4 text-muted-foreground" />
               </Button>
               <div className="flex items-center gap-3">
-                <h1 className="text-sm font-semibold text-foreground">ABS Compliance Memorandum</h1>
+                <h1 className="text-sm text-foreground">Create new ABS Compliance Memorandum</h1>
                 <span className="text-xs text-muted-foreground">
                   {progress.answered} of {progress.total}
                 </span>

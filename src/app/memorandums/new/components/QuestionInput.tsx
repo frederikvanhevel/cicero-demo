@@ -105,40 +105,77 @@ export function QuestionInput({
                     className={`space-y-2 ${showValidation ? 'border border-red-500 rounded-md p-2' : ''}`}
                 >
                     {question.options?.options?.map((option) => (
-                        <label
-                            key={option.value}
-                            className='flex items-start space-x-3 p-3 rounded-lg hover:bg-muted/50 transition-all duration-100 cursor-pointer group'
-                        >
-                            <Checkbox
-                                id={option.value}
-                                checked={
-                                    Array.isArray(value) &&
-                                    value.includes(option.value)
-                                }
-                                onCheckedChange={(checked) => {
-                                    const newValue = Array.isArray(value)
-                                        ? [...value]
-                                        : []
-                                    if (checked) {
-                                        newValue.push(option.value)
-                                    } else {
-                                        const index = newValue.indexOf(
-                                            option.value
+                        <div key={option.value} className='space-y-2'>
+                            <label
+                                className='flex items-start space-x-3 p-3 rounded-lg hover:bg-muted/50 transition-all duration-100 cursor-pointer group'
+                            >
+                                <Checkbox
+                                    id={option.value}
+                                    checked={
+                                        Array.isArray(value) &&
+                                        value.some((v: string | { value: string; customInput?: string }) =>
+                                            typeof v === 'string' ? v === option.value : v.value === option.value
                                         )
-                                        if (index > -1) {
-                                            newValue.splice(index, 1)
-                                        }
                                     }
-                                    onChange(newValue)
-                                }}
-                                className={
-                                    showValidation ? 'border-red-500' : ''
-                                }
-                            />
-                            <span className='text-sm font-normal leading-relaxed flex-1'>
-                                {option.label}
-                            </span>
-                        </label>
+                                    onCheckedChange={(checked) => {
+                                        const newValue = Array.isArray(value)
+                                            ? [...value]
+                                            : []
+                                        if (checked) {
+                                            if (option.allowCustomInput) {
+                                                newValue.push({ value: option.value, customInput: '' })
+                                            } else {
+                                                newValue.push(option.value)
+                                            }
+                                        } else {
+                                            const index = newValue.findIndex((v: string | { value: string; customInput?: string }) =>
+                                                typeof v === 'string' ? v === option.value : v.value === option.value
+                                            )
+                                            if (index > -1) {
+                                                newValue.splice(index, 1)
+                                            }
+                                        }
+                                        onChange(newValue)
+                                    }}
+                                    className={
+                                        showValidation ? 'border-red-500' : ''
+                                    }
+                                />
+                                <span className='text-sm font-normal leading-relaxed flex-1'>
+                                    {option.label}
+                                </span>
+                            </label>
+                            {option.allowCustomInput &&
+                                Array.isArray(value) &&
+                                value.some((v: string | { value: string; customInput?: string }) =>
+                                    typeof v === 'string' ? v === option.value : v.value === option.value
+                                ) && (
+                                <div className='pl-9'>
+                                    <Input
+                                        placeholder='Please specify...'
+                                        value={
+                                            (() => {
+                                                const item = value.find((v: string | { value: string; customInput?: string }) =>
+                                                    typeof v === 'string' ? v === option.value : v.value === option.value
+                                                )
+                                                return typeof item === 'object' ? item.customInput || '' : ''
+                                            })()
+                                        }
+                                        onChange={(e) => {
+                                            const newValue = [...value]
+                                            const index = newValue.findIndex((v: string | { value: string; customInput?: string }) =>
+                                                typeof v === 'string' ? v === option.value : v.value === option.value
+                                            )
+                                            if (index > -1) {
+                                                newValue[index] = { value: option.value, customInput: e.target.value }
+                                            }
+                                            onChange(newValue)
+                                        }}
+                                        className='text-sm'
+                                    />
+                                </div>
+                            )}
+                        </div>
                     ))}
                 </div>
             )

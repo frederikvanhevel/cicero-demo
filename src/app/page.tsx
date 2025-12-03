@@ -1,6 +1,6 @@
 "use client"
 
-import { Search, ArrowUpDown } from "lucide-react"
+import { Search, ArrowUpDown, Plus } from "lucide-react"
 import { useRouter } from "next/navigation"
 import Sidebar from "@/components/Sidebar"
 import SearchBar from "@/components/SearchBar"
@@ -12,28 +12,16 @@ export default function Home() {
   const router = useRouter()
   const prompts = [
     {
-      title: "Access & Benefit Sharing Memorandum",
-      description: "Generate ABS agreements for biological resources, research partnerships, and regulatory compliance with 2025 standards.",
+      title: "ABS Compliance Memorandum",
+      description: "Draft comprehensive compliance memoranda covering access and benefit-sharing obligations under the Nagoya Protocol and related national legislation.",
     },
     {
-      title: "Memorandum of Understanding (MOU)",
-      description: "Draft professional MOUs for partnerships, collaborations, and joint ventures with clear terms and expectations.",
+      title: "Material Transfer Agreement",
+      description: "Draft MTAs for genetic resource transfers, ensuring proper documentation and compliance with ABS regulations across jurisdictions.",
     },
     {
-      title: "Compliance Memorandum",
-      description: "Create compliance memos for GDPR, HIPAA, AI regulations, and industry-specific requirements with expert guidance.",
-    },
-    {
-      title: "Memorandum of Agreement (MOA)",
-      description: "Prepare formal, legally-binding MOAs with detailed terms, responsibilities, and performance obligations.",
-    },
-    {
-      title: "Internal Policy Memorandum",
-      description: "Develop clear internal policy memos for company procedures, guidelines, and organizational announcements.",
-    },
-    {
-      title: "Legal Briefing Memorandum",
-      description: "Summarize legal matters, case law, regulatory changes, and provide strategic recommendations for decision-makers.",
+      title: "Nagoya Protocol Compliance",
+      description: "Create compliance documentation for user country obligations under EU, UK, and other Nagoya Protocol implementing regulations.",
     },
   ]
 
@@ -59,10 +47,7 @@ export default function Home() {
           <div className="space-y-6">
             <div className="flex items-center justify-between">
               <div className="flex items-center gap-3">
-                <h3 className="text-sm font-medium text-foreground">Memorandum Templates</h3>
-                <span className="text-xs text-white bg-accent px-2 py-1 rounded font-medium">
-                  Popular
-                </span>
+                <h3 className="text-sm font-medium text-foreground">Templates</h3>
               </div>
 
               <div className="flex items-center gap-2">
@@ -73,10 +58,16 @@ export default function Home() {
                   <ArrowUpDown className="w-4 h-4" />
                 </Button>
                 <Button variant="outline" size="sm" className="text-xs">
-                  Create custom
+                  Show templates
                 </Button>
-                <Button variant="default" size="sm" className="text-xs bg-accent text-white hover:bg-accent/90">
-                  View all templates
+                <Button
+                  variant="default"
+                  size="sm"
+                  className="text-xs bg-accent text-white hover:bg-accent/90"
+                  onClick={() => router.push('/memorandums/new')}
+                >
+                  <Plus className="w-4 h-4 mr-1" />
+                  New memorandum
                 </Button>
               </div>
             </div>

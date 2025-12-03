@@ -205,8 +205,8 @@ export function SinglePageForm({ questions, onSubmit, onProgressChange }: Single
                                                 className='h-9 px-4 cursor-pointer bg-accent text-white hover:bg-accent/90'
                                             >
                                                 {formState.isSubmitting
-                                                    ? 'Generating...'
-                                                    : 'Generate Memorandum'}
+                                                    ? 'Drafting...'
+                                                    : 'Draft Memorandum'}
                                             </Button>
                                         </div>
                                     </div>

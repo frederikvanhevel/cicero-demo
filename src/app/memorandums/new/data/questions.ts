@@ -21,11 +21,6 @@ export const questions: Question[] = [
                     description: 'vaccines and therapeutics'
                 },
                 {
-                    value: 'medical_devices',
-                    label: 'Medical Devices',
-                    description: 'diagnostics, devices, hardware & software'
-                },
-                {
                     value: 'food',
                     label: 'Food',
                     description:
@@ -47,6 +42,12 @@ export const questions: Question[] = [
                     label: 'Biotechnology',
                     description:
                         'industrial, computational, marine, environmental'
+                },
+                {
+                    value: 'other',
+                    label: 'Other',
+                    description: 'Please specify',
+                    allowCustomInput: true
                 }
             ]
         }
@@ -119,40 +120,6 @@ export const questions: Question[] = [
         }
     },
     {
-        id: 'material_nature',
-        code: 'material_nature',
-        text: 'Does the physical material contain, or does the information relate to, functional units of heredity?',
-        type: QuestionType.RADIO,
-        required: true,
-        order: 1,
-        sectionTitle: 'Material Questions',
-        sectionDescription:
-            'Functional units of heredity means that your material or information contains DNA or RNA, even in part.  Derivatives is any does not contain DNA or RNA, such as proteins or metabolites, as well as information relating to it.',
-        help: 'This helps determine which ABS protocols apply to your case.',
-        options: {
-            options: [
-                {
-                    value: 'functional_units',
-                    label: 'Contains functional units of heredity',
-                    description:
-                        'The material contains, or the information relates to, functional units of heredity (e.g., DNA)'
-                },
-                {
-                    value: 'derivative',
-                    label: 'Derivative material',
-                    description:
-                        'The material does not contain functional units of heredity and can be described as a derivative (a naturally occurring biochemical compound resulting from genetic expression or metabolism)'
-                },
-                {
-                    value: 'unknown',
-                    label: "I don't know",
-                    description:
-                        'I am not sure whether the material contains functional units of heredity or is a derivative material'
-                }
-            ]
-        }
-    },
-    {
         id: 'material_description',
         code: 'material_description',
         text: 'Please describe the nature of the material as specifically as possible.',
@@ -167,75 +134,22 @@ export const questions: Question[] = [
             minLength: 5
         },
         options: {
-            placeholder: 'Provide a detailed description of the material...'
+            placeholder: 'Describe the source, composition, and specific characteristics of the material. Include details about what it is, where it comes from, and any unique properties that may be relevant for ABS compliance...'
         }
     },
     {
         id: 'special_features',
         code: 'special_features',
         text: 'Are there any special features of the material?',
-        type: QuestionType.CHECKBOX,
+        type: QuestionType.TEXTAREA,
         required: false,
         order: 3,
         sectionTitle: 'Material Questions',
         sectionDescription:
-            'Understanding the nature of your material is crucial for ABS compliance. The following questions help us determine the appropriate protocols and requirements.',
-        help: 'Select all that apply.',
+            'Special features of your material can significantly impact ABS compliance requirements. Certain characteristics may trigger specific protocols, permits, or additional documentation requirements.',
+        help: 'Consider factors like: biological safety level, regulatory status, conservation status, commercial value, research restrictions, or any unique properties that might affect access and benefit-sharing requirements.',
         options: {
-            options: [
-                {
-                    value: 'pathogen',
-                    label: 'Known or potential pathogen',
-                    description:
-                        'The material is known or potential human, plant or veterinary pathogen'
-                },
-                {
-                    value: 'influenza_pandemic',
-                    label: 'Influenza with pandemic potential',
-                    description:
-                        'The material is an influenza sample with pandemic potential'
-                },
-                {
-                    value: 'pathogen_pandemic',
-                    label: 'Pathogen with pandemic potential',
-                    description:
-                        'The material is pathogen with pandemic potential'
-                },
-                {
-                    value: 'marine',
-                    label: 'Marine areas beyond jurisdiction',
-                    description:
-                        'The material has been obtained from marine areas beyond national jurisdiction'
-                },
-                {
-                    value: 'food_agriculture',
-                    label: 'Food and agricultural purposes',
-                    description:
-                        'The material will be used for food and agricultural purposes'
-                },
-                {
-                    value: 'international_management',
-                    label: 'International management region',
-                    description:
-                        'The material was obtained from a region of international management (e.g., Antarctica, Lake Tanganyika)'
-                },
-                {
-                    value: 'seasonal_influenza',
-                    label: 'Seasonal influenza',
-                    description:
-                        'The material is a seasonal influenza virus sample'
-                },
-                {
-                    value: 'other',
-                    label: 'Other',
-                    description: ''
-                },
-                {
-                    value: 'not_applicable',
-                    label: 'Not applicable',
-                    description: ''
-                }
-            ]
+            placeholder: 'Describe any special features or characteristics of the material (e.g., pathogen status, source location, intended use, etc.)...'
         }
     },
     {
@@ -290,29 +204,16 @@ export const questions: Question[] = [
     {
         id: 'acquisition_conditions',
         code: 'acquisition_conditions',
-        text: 'Under what conditions was the material physically acquired?',
-        type: QuestionType.RADIO,
+        text: 'Describe under what conditions the material was physically acquired.',
+        type: QuestionType.TEXTAREA,
         required: true,
         order: 7,
         sectionTitle: 'Material Questions',
         sectionDescription:
-            'Understanding the nature of your material is crucial for ABS compliance. The following questions help us determine the appropriate protocols and requirements.',
-        help: '"In-situ conditions" means conditions where genetic resources exist within ecosystems and natural habitats. "Ex-situ conditions" means the biological resources are held outside their natural habitats.',
+            'The conditions under which material was acquired can significantly impact ABS compliance requirements. Different acquisition methods may require different permits, documentation, or benefit-sharing arrangements.',
+        help: 'Describe who acquired the material and how. Include details about the acquisition process and any third parties involved.',
         options: {
-            options: [
-                {
-                    value: 'in_situ',
-                    label: 'In Situ Conditions'
-                },
-                {
-                    value: 'ex_situ_origin',
-                    label: 'Ex Situ Conditions, in country of origin'
-                },
-                {
-                    value: 'ex_situ_other',
-                    label: 'Ex Situ Conditions, in other country than country of origin'
-                }
-            ]
+            placeholder: 'E.g., "By my company in the country where the material exists in its natural habitat" or "From a supplier" or "By a local third party who extracted it on my behalf"...'
         }
     },
     {
@@ -360,7 +261,7 @@ export const questions: Question[] = [
         help: 'Include information about specific techniques, methodologies, and expected outcomes.',
         options: {
             placeholder:
-                'Provide detailed information about your research activities...'
+                'E.g., "DNA sequencing to identify novel genes" or "Extraction of bioactive compounds" or "Breeding disease-resistant crops" or "Biofuel research"...'
         },
         validation: {
             minLength: 10

@@ -1,8 +1,9 @@
 "use client"
 
-import { Plus, Download, MoreHorizontal, Filter, ArrowLeft, ChevronDown, ChevronRight } from "lucide-react"
+import { Plus, Download, Filter, ArrowLeft, ChevronDown, ChevronRight } from "lucide-react"
 import { useRouter } from "next/navigation"
-import { useState } from "react"
+import { useState, useEffect } from "react"
+import Image from "next/image"
 import Sidebar from "@/components/Sidebar"
 import { Header } from "@/components/Header"
 import { Button } from "@/components/ui/button"
@@ -17,70 +18,114 @@ import {
 export default function MemorandumsPage() {
   const router = useRouter()
   const [draftsCollapsed, setDraftsCollapsed] = useState(false)
-  const [generatingCollapsed, setGeneratingCollapsed] = useState(false)
+  const [processingCollapsed, setProcessingCollapsed] = useState(false)
   const [allMemosCollapsed, setAllMemosCollapsed] = useState(false)
+
+  // Track animated progress for processing items
+  const [animatedProgress, setAnimatedProgress] = useState<Record<number, number>>({})
 
   const memorandums = [
     {
       id: 1,
-      name: "ABS Agreement - BioTech Research",
-      type: "Access & Benefit Sharing",
+      name: "ABS Compliance Memorandum - German Pharma India",
+      type: "Pharmaceutical",
       status: "Draft",
       progress: null,
-      lastModified: "2 hours ago",
-      createdBy: "Jack Davis",
+      progressStage: null,
+      timeRemaining: null,
+      lastModified: "Just now",
+      createdBy: "Bart Van Vooren",
     },
     {
       id: 2,
-      name: "Partnership MOU - Tech Corp",
-      type: "Memorandum of Understanding",
+      name: "Marine Biotechnology - EU Regulation Assessment",
+      type: "Biotechnology",
       status: "Processing",
       progress: 65,
-      lastModified: "1 day ago",
-      createdBy: "Jack Davis",
+      progressStage: "Drafting memorandum",
+      timeRemaining: "3-5 min",
+      lastModified: "3 minutes ago",
+      createdBy: "Bart Van Vooren",
     },
     {
       id: 3,
-      name: "GDPR Compliance Memo",
-      type: "Compliance Memorandum",
+      name: "Plant Genetic Resources - Kenya Collection",
+      type: "Plant Breeding",
       status: "Completed",
       progress: null,
+      progressStage: null,
+      timeRemaining: null,
       lastModified: "3 days ago",
-      createdBy: "Jack Davis",
+      createdBy: "Bart Van Vooren",
     },
     {
       id: 4,
-      name: "Joint Venture Agreement",
-      type: "Memorandum of Agreement",
+      name: "Cosmetic Ingredient - Brazil Sourcing",
+      type: "Cosmetics",
       status: "Draft",
       progress: null,
+      progressStage: null,
+      timeRemaining: null,
       lastModified: "5 days ago",
-      createdBy: "Jack Davis",
+      createdBy: "Bart Van Vooren",
     },
     {
       id: 5,
-      name: "Remote Work Policy Update",
-      type: "Internal Policy Memorandum",
+      name: "Digital Sequence Data - Multi-Country Analysis",
+      type: "Biotechnology",
       status: "Completed",
       progress: null,
+      progressStage: null,
+      timeRemaining: null,
       lastModified: "1 week ago",
-      createdBy: "Jack Davis",
+      createdBy: "Bart Van Vooren",
     },
     {
       id: 6,
-      name: "Case Law Summary - Smith v. Jones",
-      type: "Legal Briefing Memorandum",
+      name: "Agricultural Breeding Program - Thailand",
+      type: "Plant Breeding",
       status: "Processing",
       progress: 30,
-      lastModified: "2 weeks ago",
-      createdBy: "Jack Davis",
+      progressStage: "Researching legal requirements",
+      timeRemaining: "8-12 min",
+      lastModified: "5 minutes ago",
+      createdBy: "Bart Van Vooren",
     },
   ]
 
   // Separate memorandums by status into three categories
   const draftMemos = memorandums.filter(m => m.status === "Draft")
-  const generatingMemos = memorandums.filter(m => m.status === "Processing")
+  const processingMemos = memorandums.filter(m => m.status === "Processing")
   const completedMemos = memorandums.filter(m => m.status === "Completed")
+
+  // Animate progress for processing items
+  useEffect(() => {
+    // Initialize animated progress for processing items
+    const initialProgress: Record<number, number> = {}
+    const processing = memorandums.filter(m => m.status === "Processing")
+
+    processing.forEach(memo => {
+      initialProgress[memo.id] = memo.progress || 0
+    })
+    setAnimatedProgress(initialProgress)
+
+    // Slowly increment progress for each processing item
+    const interval = setInterval(() => {
+      setAnimatedProgress(prev => {
+        const updated = { ...prev }
+        processing.forEach(memo => {
+          const current = updated[memo.id] || memo.progress || 0
+          if (current < 100) {
+            updated[memo.id] = Math.min(100, current + 1) // Increment by 1% every second
+          }
+        })
+        return updated
+      })
+    }, 1000) // Update every second
+
+    return () => clearInterval(interval)
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []) // Only run once on mount
 
   const renderMemoRow = (memo: typeof memorandums[0]) => {
     return (
@@ -90,18 +135,37 @@ export default function MemorandumsPage() {
         onClick={() => router.push(`/memorandums/${memo.id}`)}
       >
         <TableCell className="py-3">
-          <div className="flex-1 min-w-0 flex items-center gap-2">
-            <span className="text-xs font-medium text-foreground truncate">
-              {memo.name}
-            </span>
-            {memo.status === "Processing" && memo.progress !== null && (
-              <span className="text-xs text-blue-600 font-medium whitespace-nowrap flex items-center gap-1">
-                <svg className="animate-spin h-3 w-3" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
-                  <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
-                  <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
-                </svg>
-                {memo.progress}%
+          <div className="flex-1 min-w-0">
+            <div className="flex items-center gap-2">
+              <span className="text-xs font-medium text-foreground truncate">
+                {memo.name}
               </span>
+            </div>
+            {memo.status === "Processing" && (
+              <div className="max-w-[500px] mt-1">
+                {memo.progressStage && (
+                  <div className="flex items-center justify-between mb-1">
+                    <span className="text-xs text-muted-foreground truncate">
+                      {memo.progressStage}
+                    </span>
+                    <div className="flex items-center gap-1.5 ml-2 flex-shrink-0">
+                      <div className="w-1.5 h-1.5 bg-blue-500 rounded-full animate-pulse"></div>
+                      <span className="text-xs text-blue-600 font-medium">
+                        {Math.round(animatedProgress[memo.id] || memo.progress || 0)}%
+                      </span>
+                    </div>
+                  </div>
+                )}
+                <div className="w-full bg-muted rounded-full h-1 overflow-hidden relative">
+                  <div
+                    className="h-full bg-gradient-to-r from-blue-500 to-blue-600 transition-all duration-500 ease-out relative overflow-hidden"
+                    style={{ width: `${animatedProgress[memo.id] || memo.progress}%` }}
+                  >
+                    {/* Shimmer effect */}
+                    <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/60 to-transparent animate-shimmer" />
+                  </div>
+                </div>
+              </div>
             )}
           </div>
         </TableCell>
@@ -112,11 +176,13 @@ export default function MemorandumsPage() {
         </TableCell>
         <TableCell className="py-3">
           <div className="flex items-center gap-2">
-            <div className="w-5 h-5 rounded-full bg-blue-100 flex items-center justify-center flex-shrink-0">
-              <span className="text-[10px] font-medium text-blue-700">
-                {memo.createdBy.split(' ').map(n => n[0]).join('')}
-              </span>
-            </div>
+            <Image
+              src="/avatar.jpg"
+              alt={memo.createdBy}
+              width={20}
+              height={20}
+              className="w-5 h-5 rounded-full flex-shrink-0"
+            />
             <span className="text-xs text-muted-foreground">
               {memo.createdBy}
             </span>
@@ -126,11 +192,6 @@ export default function MemorandumsPage() {
           <span className="text-xs text-muted-foreground">
             {memo.lastModified}
           </span>
-        </TableCell>
-        <TableCell className="py-3">
-          <Button variant="ghost" size="sm" className="h-6 w-6 p-0">
-            <MoreHorizontal className="w-3.5 h-3.5" />
-          </Button>
         </TableCell>
       </TableRow>
     )
@@ -144,8 +205,8 @@ export default function MemorandumsPage() {
         <Header logoType="image" />
 
         <div className="border-b border-border bg-background ml-16">
-          <div className="px-4 h-11 flex items-center justify-between gap-4">
-            <div className="flex items-center gap-2">
+          <div className="px-6 h-12 flex items-center justify-between gap-4">
+            <div className="flex items-center gap-3">
               <Button
                 variant="ghost"
                 size="sm"
@@ -154,7 +215,7 @@ export default function MemorandumsPage() {
               >
                 <ArrowLeft className="w-4 h-4 text-muted-foreground" />
               </Button>
-              <h1 className="text-sm font-medium text-foreground">Memorandums</h1>
+              <h1 className="text-sm text-foreground">Overview</h1>
             </div>
 
             <div className="flex items-center gap-1.5">
@@ -179,17 +240,61 @@ export default function MemorandumsPage() {
         </div>
 
         <div className="flex-1 ml-16 p-6 space-y-6">
+          {/* Processing Section */}
+          {processingMemos.length > 0 && (
+            <div className="bg-card border border-border rounded-lg overflow-hidden">
+              <div className="relative w-full overflow-auto">
+                <table className="w-full caption-bottom text-sm">
+                  <colgroup>
+                    <col style={{ width: "auto" }} />
+                    <col style={{ width: "203px" }} />
+                    <col style={{ width: "254px" }} />
+                    <col style={{ width: "203px" }} />
+                  </colgroup>
+                  <TableHeader>
+                    <TableRow className="hover:bg-transparent bg-muted/30">
+                      <TableHead className="text-xs font-medium py-3">
+                        <button
+                          onClick={() => setProcessingCollapsed(!processingCollapsed)}
+                          className="flex items-center gap-2 hover:text-foreground transition-colors"
+                        >
+                          {processingCollapsed ? (
+                            <ChevronRight className="w-4 h-4" />
+                          ) : (
+                            <ChevronDown className="w-4 h-4" />
+                          )}
+                          <span className="font-semibold flex items-center gap-1.5">
+                            In Progress
+                            <span className="w-1.5 h-1.5 rounded-full bg-green-500"></span>
+                          </span>
+                          <span className="text-muted-foreground">({processingMemos.length})</span>
+                        </button>
+                      </TableHead>
+                      <TableHead className="text-xs font-medium">Type</TableHead>
+                      <TableHead className="text-xs font-medium">Created By</TableHead>
+                      <TableHead className="text-xs font-medium">Last Modified</TableHead>
+                    </TableRow>
+                  </TableHeader>
+                  {!processingCollapsed && (
+                    <TableBody>
+                      {processingMemos.map((memo) => renderMemoRow(memo))}
+                    </TableBody>
+                  )}
+                </table>
+              </div>
+            </div>
+          )}
+
           {/* Drafts Section */}
           {draftMemos.length > 0 && (
             <div className="bg-card border border-border rounded-lg overflow-hidden">
               <div className="relative w-full overflow-auto">
-                <table className="w-full caption-bottom text-sm" style={{ tableLayout: "fixed" }}>
+                <table className="w-full caption-bottom text-sm">
                   <colgroup>
-                    <col style={{ width: "45%" }} />
-                    <col style={{ width: "25%" }} />
-                    <col style={{ width: "15%" }} />
-                    <col style={{ width: "12%" }} />
-                    <col style={{ width: "3%" }} />
+                    <col style={{ width: "auto" }} />
+                    <col style={{ width: "203px" }} />
+                    <col style={{ width: "254px" }} />
+                    <col style={{ width: "203px" }} />
                   </colgroup>
                   <TableHeader>
                     <TableRow className="hover:bg-transparent bg-muted/30">
@@ -213,7 +318,6 @@ export default function MemorandumsPage() {
                       <TableHead className="text-xs font-medium">Type</TableHead>
                       <TableHead className="text-xs font-medium">Created By</TableHead>
                       <TableHead className="text-xs font-medium">Last Modified</TableHead>
-                      <TableHead className="text-xs font-medium"></TableHead>
                     </TableRow>
                   </TableHeader>
                   {!draftsCollapsed && (
@@ -226,63 +330,15 @@ export default function MemorandumsPage() {
             </div>
           )}
 
-          {/* Generating Section */}
-          {generatingMemos.length > 0 && (
-            <div className="bg-card border border-border rounded-lg overflow-hidden">
-              <div className="relative w-full overflow-auto">
-                <table className="w-full caption-bottom text-sm" style={{ tableLayout: "fixed" }}>
-                  <colgroup>
-                    <col style={{ width: "45%" }} />
-                    <col style={{ width: "25%" }} />
-                    <col style={{ width: "15%" }} />
-                    <col style={{ width: "12%" }} />
-                    <col style={{ width: "3%" }} />
-                  </colgroup>
-                  <TableHeader>
-                    <TableRow className="hover:bg-transparent bg-muted/30">
-                      <TableHead className="text-xs font-medium py-3">
-                        <button
-                          onClick={() => setGeneratingCollapsed(!generatingCollapsed)}
-                          className="flex items-center gap-2 hover:text-foreground transition-colors"
-                        >
-                          {generatingCollapsed ? (
-                            <ChevronRight className="w-4 h-4" />
-                          ) : (
-                            <ChevronDown className="w-4 h-4" />
-                          )}
-                          <span className="font-semibold flex items-center gap-1.5">
-                            Generating
-                            <span className="w-1.5 h-1.5 rounded-full bg-green-500"></span>
-                          </span>
-                          <span className="text-muted-foreground">({generatingMemos.length})</span>
-                        </button>
-                      </TableHead>
-                      <TableHead className="text-xs font-medium">Type</TableHead>
-                      <TableHead className="text-xs font-medium">Created By</TableHead>
-                      <TableHead className="text-xs font-medium">Last Modified</TableHead>
-                      <TableHead className="text-xs font-medium"></TableHead>
-                    </TableRow>
-                  </TableHeader>
-                  {!generatingCollapsed && (
-                    <TableBody>
-                      {generatingMemos.map((memo) => renderMemoRow(memo))}
-                    </TableBody>
-                  )}
-                </table>
-              </div>
-            </div>
-          )}
-
           {/* All Memorandums Section */}
           <div className="bg-card border border-border rounded-lg overflow-hidden">
             <div className="relative w-full overflow-auto">
-              <table className="w-full caption-bottom text-sm" style={{ tableLayout: "fixed" }}>
+              <table className="w-full caption-bottom text-sm">
                 <colgroup>
-                  <col style={{ width: "45%" }} />
-                  <col style={{ width: "25%" }} />
-                  <col style={{ width: "15%" }} />
-                  <col style={{ width: "12%" }} />
-                  <col style={{ width: "3%" }} />
+                  <col style={{ width: "auto" }} />
+                  <col style={{ width: "203px" }} />
+                  <col style={{ width: "254px" }} />
+                  <col style={{ width: "203px" }} />
                 </colgroup>
                 <TableHeader>
                   <TableRow className="hover:bg-transparent bg-muted/30">
@@ -303,7 +359,6 @@ export default function MemorandumsPage() {
                     <TableHead className="text-xs font-medium">Type</TableHead>
                     <TableHead className="text-xs font-medium">Created By</TableHead>
                     <TableHead className="text-xs font-medium">Last Modified</TableHead>
-                    <TableHead className="text-xs font-medium"></TableHead>
                   </TableRow>
                 </TableHeader>
                 {!allMemosCollapsed && (

@@ -1,4 +1,5 @@
 import Image from "next/image"
+import Link from "next/link"
 import { cn } from "@/lib/utils"
 
 interface HeaderProps {
@@ -18,9 +19,9 @@ export function Header({
 
   return (
     <header className={cn("border-b border-border bg-background sticky top-0 z-10", className)}>
-      <div className={`px-6 ${height} flex items-center justify-between`}>
+      <div className={`pr-6 ${height} flex items-center justify-between`}>
         {showLogo && (
-          <div className="flex items-center gap-3">
+          <Link href="/" className="flex items-center gap-3 pl-4 hover:opacity-80 transition-opacity">
             {logoType === "image" ? (
               <>
                 <Image
@@ -40,13 +41,17 @@ export function Header({
                 <span className="text-sm font-semibold text-foreground">Cicero</span>
               </>
             )}
-          </div>
+          </Link>
         )}
 
         <div className="flex items-center gap-2">
-          <div className="w-8 h-8 rounded-full bg-gradient-brand flex items-center justify-center cursor-pointer hover:opacity-90 transition-all duration-200">
-            <span className="text-xs font-medium text-white">FV</span>
-          </div>
+          <Image
+            src="/avatar.jpg"
+            alt="User Avatar"
+            width={32}
+            height={32}
+            className="w-8 h-8 rounded-full object-cover cursor-pointer hover:opacity-90 transition-all duration-200"
+          />
         </div>
       </div>
     </header>
