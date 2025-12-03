@@ -1,6 +1,7 @@
 import Image from "next/image"
 import Link from "next/link"
 import { cn } from "@/lib/utils"
+import { assetPath } from "@/lib/assetPath"
 
 interface HeaderProps {
   variant?: "default" | "compact"
@@ -25,7 +26,7 @@ export function Header({
             {logoType === "image" ? (
               <>
                 <Image
-                  src="/logo.png"
+                  src={assetPath("/logo.png")}
                   alt="Cicero Logo"
                   width={32}
                   height={32}
@@ -46,7 +47,7 @@ export function Header({
 
         <div className="flex items-center gap-2">
           <Image
-            src="/avatar.jpg"
+            src={assetPath("/avatar.jpg")}
             alt="User Avatar"
             width={32}
             height={32}

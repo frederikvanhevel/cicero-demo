@@ -7,6 +7,7 @@ import Image from "next/image"
 import Sidebar from "@/components/Sidebar"
 import { Header } from "@/components/Header"
 import { Button } from "@/components/ui/button"
+import { assetPath } from "@/lib/assetPath"
 import {
   TableBody,
   TableCell,
@@ -177,7 +178,7 @@ export default function MemorandumsPage() {
         <TableCell className="py-3">
           <div className="flex items-center gap-2">
             <Image
-              src="/avatar.jpg"
+              src={assetPath("/avatar.jpg")}
               alt={memo.createdBy}
               width={20}
               height={20}
